@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>URL</title>
+
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/index.js"></script>
+
+</head>
+<body class="bg-light text-dark">
+    <div class="container">
+        <h1>URL Shrinker</h1>
+        <form action="/shortUrl" method="POST" class="my-4 form-inline">
+            <label for="fullUrl" class="sr-only">Url</label>
+            <input type="url" name="fullUrl" id="fullUrl" placeholder="Url 입력해주세요" required class="form-control mr-2 col" required autofocus value="http://">
+            <button type="submit" class="btn btn-success">Shrink</button>
+        </form>
+
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Full Url</th>
+                    <th>Short Url</th>
+                    <th>Clicks</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% Urls.forEach(url => { %>
+                    <tr>    
+                        <td><a href="<%= url.full %>" target="_black"><%= url.full %></a></td>
+                        <td><a href="<%= url.short %>" target="_black"><%= url.short %></a></td>
+                        <td><%= url.clicks %></td>
+                        <td style="display: flex; justify-content: center;">    
+                            <form action="/<%= url.id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="btn btn-secondary mr-1" onclick="return confirm('are you sure to want to delete your URL?')" >
+                                Delete
+                                </button>
+                            </form>
+
+                            <a href="/edit/<%= url.id %>" class="btn btn-secondary d-print-inline" >Edit</a>
+                        </td>
+                    </tr>
+
+               <% })%>     
+              
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
