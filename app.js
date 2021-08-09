@@ -1,3 +1,8 @@
+//dotenv
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config({path:'.env'})
+}
+
 //express 
 const express = require('express');
 const app = express();
@@ -7,7 +12,11 @@ const bodyParser = require('body-parser');
 //mongoose connect
 //mongoose 비동기
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/URLproject' , {
+const id = process.env.ID 
+console.log(id)
+const pw = encodeURIComponent(process.env.PW)
+console.log(pw)
+mongoose.connect(`mongodb+srv://${id}:${pw}@cluster0.zrxi5.mongodb.net/myFirstDatabase?retryWrites=true` , {
     useNewUrlParser: true , 
     useUnifiedTopology: true
 }).then(() => {
@@ -39,15 +48,12 @@ app.get('/' , async (req , res) => {
 
 app.post('/shortUrl' , async (req , res) => {
     await UrlSchema.create({full : req.body.fullUrl})
-
-
     res.redirect('/')
 })
 
 
 app.get('/:shortId' , async (req , res) => {
      const Urls = await UrlSchema.findOne({short: req.params.shortId});
-
      if(Urls == null){
        return  res.status(404).send('')
      }
